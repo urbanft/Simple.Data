@@ -1,4 +1,9 @@
-# Simple.Data
+# UFT Notes
+
+If you have come looking for the code which is used by UFT you can find it in this repository under a new folder called `UFT.Modifications`.
+All original code has been left untouched as reference in their original locations.
+
+## Simple.Data
 A lightweight, dynamic data access component for .NET, written in C#.
 ## What is it?
 Prompted by the need for an easy-to-use database access component which prevents SQL injection attacks while not requiring lots of boilerplate ADO.NET code or a pre-generated ORM model. Inspired by Ruby's ActiveRecord and DataMapper gems.
