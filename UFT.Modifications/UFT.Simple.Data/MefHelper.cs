@@ -11,19 +11,19 @@ namespace Simple.Data
     {
         public override T Compose<T>()
         {
-            using (var container = CreateAppDomainContainer())
+            using(var container = CreateAppDomainContainer())
             {
                 var exports = container.GetExports<T>().ToList();
-                if (exports.Count() == 1)
+                if(exports.Count() == 1)
                 {
                     return exports.Single().Value;
                 }
             }
-            using (var container = CreateFolderContainer())
+            using(var container = CreateFolderContainer())
             {
                 var exports = container.GetExports<T>().ToList();
-                if (exports.Count() == 0) throw new SimpleDataException("No ADO Provider found.");
-                if (exports.Count() > 1) throw new SimpleDataException("Multiple ADO Providers found; specify provider name or remove unwanted assemblies.");
+                if(exports.Count() == 0) throw new SimpleDataException("No ADO Provider found.");
+                if(exports.Count() > 1) throw new SimpleDataException("Multiple ADO Providers found; specify provider name or remove unwanted assemblies.");
                 return exports.Single().Value;
             }
         }
@@ -32,23 +32,23 @@ namespace Simple.Data
         {
             try
             {
-                using (var container = CreateAppDomainContainer())
+                using(var container = CreateAppDomainContainer())
                 {
                     var exports = container.GetExports<T>(contractName).ToList();
-                    if (exports.Count() == 1)
+                    if(exports.Count() == 1)
                     {
                         return exports.Single().Value;
                     }
                 }
-                using (var container = CreateFolderContainer())
+                using(var container = CreateFolderContainer())
                 {
                     var exports = container.GetExports<T>(contractName).ToList();
-                    if (exports.Count() == 0) throw new SimpleDataException(string.Format("No {0} Provider found.", contractName));
-                    if (exports.Count() > 1) throw new SimpleDataException("Multiple ADO Providers found; specify provider name or remove unwanted assemblies.");
+                    if(exports.Count() == 0) throw new SimpleDataException(string.Format("No {0} Provider found.", contractName));
+                    if(exports.Count() > 1) throw new SimpleDataException("Multiple ADO Providers found; specify provider name or remove unwanted assemblies.");
                     return exports.Single().Value;
                 }
             }
-            catch (ReflectionTypeLoadException ex)
+            catch(ReflectionTypeLoadException ex)
             {
                 SimpleDataTraceSources.TraceSource.TraceEvent(TraceEventType.Error, SimpleDataTraceSources.GenericErrorMessageId,
                     "Compose failed: {0}", ex.Message);
@@ -58,9 +58,9 @@ namespace Simple.Data
 
         public static T GetAdjacentComponent<T>(Type knownSiblingType)
         {
-            using (var assemblyCatalog = new AssemblyCatalog(knownSiblingType.Assembly))
+            using(var assemblyCatalog = new AssemblyCatalog(knownSiblingType.Assembly))
             {
-                using (var container = new CompositionContainer(assemblyCatalog))
+                using(var container = new CompositionContainer(assemblyCatalog))
                 {
                     return container.GetExportedValueOrDefault<T>();
                 }
@@ -73,7 +73,7 @@ namespace Simple.Data
 
             var assemblyCatalog = new AssemblyCatalog(ThisAssembly);
             var aggregateCatalog = new AggregateCatalog(assemblyCatalog);
-            foreach (string file in System.IO.Directory.GetFiles(path, "Simple.Core.Data.*.dll"))
+            foreach(string file in System.IO.Directory.GetFiles(path, "UFT.Simple.Data.*.dll"))
             {
                 var catalog = new AssemblyCatalog(file);
                 aggregateCatalog.Catalogs.Add(catalog);
@@ -84,7 +84,7 @@ namespace Simple.Data
         private static CompositionContainer CreateAppDomainContainer()
         {
             var aggregateCatalog = new AggregateCatalog();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(IsSimpleDataAssembly))
+            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(IsSimpleDataAssembly))
             {
                 aggregateCatalog.Catalogs.Add(new AssemblyCatalog(assembly));
             }
